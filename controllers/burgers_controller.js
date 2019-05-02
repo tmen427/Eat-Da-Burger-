@@ -29,7 +29,7 @@ router.put("/eat", function(req, res) {
         res.json({id:result.insertId});
     })
 });
-console.log('hi');
+
 
 module.exports = router; 
 
