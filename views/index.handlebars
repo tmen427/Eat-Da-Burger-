@@ -1,0 +1,101 @@
+
+
+
+<div id = "question">
+<h1>What type of burger would you like? </h1>
+<form id="createburger" class="button-size">
+  <textarea type="text" name="burger"></textarea>
+  <button type="submit">Add burger!</button>
+</form>
+</div>
+
+<div id = "wish">
+<h1>Burger Wish List</h1>
+
+  {{#each burgers}}
+
+    <p>
+      {{#if devoured}}
+      {{this.id}}. {{this.burger_name}}
+      {{/if}}
+    </p>
+
+  {{/each}}
+
+</div>
+
+
+
+<div>
+  <h1>Not devoured yet</h1>
+  <p>  
+<ul>
+  {{#each burgers}}
+ {{#unless devoured}}
+<li>
+  <p>
+
+      
+      {{this.burger_name}} 
+     <button  id="{{this.id}}" class="devour">Devour It!</button>
+</li>
+</p>
+  {{/unless}}
+
+  {{/each}}
+  </ul>     
+</p>
+
+</form>
+</div>
+
+
+
+<script type="text/javascript">
+
+
+  $("#createburger").on("submit", function(event) {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    // [name=burger] will find an element with a "name" attribute equal to the string "burger"
+    var newBurger = {
+      burger_name: $("#createburger [name=burger]").val().trim()
+    };
+   
+
+    // Send the POST request.
+    $.ajax("/add", {type: "POST", data: newBurger
+    }).then(
+      function() {
+        console.log("created a new burger");
+     
+        location.reload();
+      
+      }
+    );
+  });
+
+
+  $('.devour').on("click", function(event){
+    event.preventDefault();
+
+//console.log($(this).attr("id")); //gets the id of the clicked
+var notdevoured = ($(this).attr("id"));
+
+
+var newBurger1 = {
+  id: notdevoured
+}
+console.log(newBurger1.id);
+$.ajax("/eat", {type:"PUT", data: newBurger1
+}).then(
+  function() {
+    console.log("devoured!");
+    location.reload();
+      }
+)
+ });
+
+ 
+</script>
